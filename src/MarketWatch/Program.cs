@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
 using System.Configuration;
+using MarketWatch.Web;
+using System.Threading;
 
 namespace MarketWatch
 {
@@ -27,8 +29,18 @@ namespace MarketWatch
                 .WriteTo.Elasticsearch(options)
                 .CreateLogger();
 
+            // Download mutual fund information.
+            DownloadAsync().GetAwaiter().GetResult();
+
             Console.WriteLine("Press enter to exit ...");
             Console.ReadLine();
+        }
+
+        private static async Task DownloadAsync()
+        {
+            var watch = new MarketWatchScraper();
+            var funds = (await watch.GetMutualFundsAsync(CancellationToken.None)).ToList();
+            Console.WriteLine(funds.Count);
         }
     }
 }
