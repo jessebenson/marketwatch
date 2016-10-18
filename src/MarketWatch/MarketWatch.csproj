@@ -80,6 +80,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Fundamentals\Distributions.cs" />
     <Compile Include="Web\Fundamentals\Expenses.cs" />
+    <Compile Include="Web\Fundamentals\FundamentalsExtensions.cs" />
     <Compile Include="Web\Fundamentals\LipperLeader.cs" />
     <Compile Include="Web\Fundamentals\Overview.cs" />
     <Compile Include="Web\Fundamentals\Performance.cs" />

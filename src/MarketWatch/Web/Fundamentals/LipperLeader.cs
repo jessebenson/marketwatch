@@ -8,10 +8,10 @@ namespace MarketWatch.Web.Fundamentals
 {
 	public sealed class LipperLeader
 	{
-		public string TotalReturn { get; set; }
-		public string ConsistentReturn { get; set; }
-		public string Preservation { get; set; }
-		public string TaxEfficiency { get; set; }
-		public string Expense { get; set; }
+		public double? TotalReturn { get; set; }
+		public double? ConsistentReturn { get; set; }
+		public double? Preservation { get; set; }
+		public double? TaxEfficiency { get; set; }
+		public double? Expense { get; set; }
 	}
 }

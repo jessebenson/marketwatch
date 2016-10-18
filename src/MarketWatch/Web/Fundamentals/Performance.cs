@@ -8,10 +8,10 @@ namespace MarketWatch.Web.Fundamentals
 {
 	public sealed class Performance
 	{
-		public string YearToDate { get; set; }
-		public string OneYear { get; set; }
-		public string ThreeYear { get; set; }
-		public string FiveYear { get; set; }
-		public string TenYear { get; set; }
+		public double? YearToDate { get; set; }
+		public double? OneYear { get; set; }
+		public double? ThreeYear { get; set; }
+		public double? FiveYear { get; set; }
+		public double? TenYear { get; set; }
 	}
 }

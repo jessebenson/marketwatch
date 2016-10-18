@@ -39,6 +39,8 @@ namespace MarketWatch
 		private static async Task DownloadAsync()
 		{
 			var watch = new MarketWatchScraper();
+			//var fund = await watch.GetMutualFundAsync("ABNOX");
+
 			var funds = (await watch.GetMutualFundsAsync()).ToList();
 			Console.WriteLine(funds.Count);
 		}

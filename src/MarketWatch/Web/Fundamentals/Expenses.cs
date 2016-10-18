@@ -8,11 +8,11 @@ namespace MarketWatch.Web.Fundamentals
 {
 	public sealed class Expenses
 	{
-		public string FrontLoad { get; set; }
-		public string DeferredLoad { get; set; }
-		public string MaxRedemptionFee { get; set; }
-		public string TotalExpenseRatio { get; set; }
-		public string TwelveB1 { get; set; }
-		public string Turnover { get; set; }
+		public double? FrontLoad { get; set; }
+		public double? DeferredLoad { get; set; }
+		public double? MaxRedemptionFee { get; set; }
+		public double? TotalExpenseRatio { get; set; }
+		public double? TwelveB1 { get; set; }
+		public double? Turnover { get; set; }
 	}
 }

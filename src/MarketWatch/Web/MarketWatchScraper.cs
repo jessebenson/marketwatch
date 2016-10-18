@@ -27,7 +27,7 @@ namespace MarketWatch.Web
 		public async Task<IEnumerable<MutualFund>> GetMutualFundsAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
 			var tasks = new List<Task<IEnumerable<MutualFund>>>();
-			for (char letter = 'A'; letter <= 'A'; letter++)
+			for (char letter = 'A'; letter <= 'Z'; letter++)
 			{
 				tasks.Add(GetMutualFundsAsync(letter, cancellationToken));
 			}
@@ -46,9 +46,7 @@ namespace MarketWatch.Web
 				{
 					var fund = await GetMutualFundAsync(client, row);
 					if (fund != null)
-					{
 						funds.Add(fund);
-					}
 				}
 
 				return funds;
@@ -74,11 +72,13 @@ namespace MarketWatch.Web
 			try
 			{
 				var content = await client.GetStringAsync($"investing/fund/{symbol}");
-				return MutualFundScraper.GetMutualFund(symbol, name, content);
+				var fund = MutualFundScraper.GetMutualFund(symbol, name, content);
+				LogMutualFund(fund);
+				return fund;
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine($"Exception reading mutual fund '{symbol}': {e.Message}");
+				Log.Warning(e, "Exception reading mutual fund {Symbol}.", symbol);
 				return null;
 			}
 		}
@@ -139,7 +139,18 @@ namespace MarketWatch.Web
 
 		private static void LogMutualFund(MutualFund fund)
 		{
-			Log.Information("Mutual fund. {Symbol} {Name} {ReturnYTD}",
+			Log.Information("Mutual fund. {Symbol} {Name} " +
+				"{ReturnYTD} {Return5yr} {TotalNetAssets} {Price} {YearLow} {YearHigh} " +
+				"{FrontLoad} {DeferredLoad} {MaxRedemptionFee} {TotalExpenseRatio} {Expense12B1} {Turnover} " +
+				"{IncomeDividend} {DividendFrequency} {CapitalGain2015} {CapitalGainYTD} " +
+				"{RiskAlpha} {RiskBeta} {RiskStdDev} {RiskRSquared} " +
+				"{LipperTotalReturn} {LipperConsistentReturn} {LipperPreservation} {LipperTaxEfficiency} {LipperExpense} " +
+				"{FundPerformanceYTD} {FundPerformance1yr} {FundPerformance3yr} {FundPerformance5yr} {FundPerformance10yr} " +
+				"{CategoryPerformanceYTD} {CategoryPerformance1yr} {CategoryPerformance3yr} {CategoryPerformance5yr} {CategoryPerformance10yr} " +
+				"{IndexPerformanceYTD} {IndexPerformance1yr} {IndexPerformance3yr} {IndexPerformance5yr} {IndexPerformance10yr} " +
+				"{PercentRankYTD} {PercentRank1yr} {PercentRank3yr} {PercentRank5yr} {PercentRank10yr} " +
+				"{QuintileRankYTD} {QuintileRank1yr} {QuintileRank3yr} {QuintileRank5yr} {QuintileRank10yr}",
+				
 				fund.Symbol,
 				fund.Name,
 

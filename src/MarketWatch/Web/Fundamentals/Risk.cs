@@ -8,9 +8,9 @@ namespace MarketWatch.Web.Fundamentals
 {
 	public sealed class Risk
 	{
-		public string Alpha { get; set; }
-		public string Beta { get; set; }
-		public string StandardDeviation { get; set; }
-		public string RSquared { get; set; }
+		public double? Alpha { get; set; }
+		public double? Beta { get; set; }
+		public double? StandardDeviation { get; set; }
+		public double? RSquared { get; set; }
 	}
 }

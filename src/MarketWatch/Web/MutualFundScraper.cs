@@ -45,12 +45,12 @@ namespace MarketWatch.Web
 
 			return new Overview
 			{
-				ReturnYTD = GetOverviewColumn(section, "YTD return"),
-				AverageReturnFiveYear = GetOverviewColumn(section, "5 yr avg return"),
-				TotalNetAssets = GetOverviewColumn(section, "Total net assets"),
-				Price = GetOverviewPrice(section),
-				YearLow = GetOverviewHighLow(section, "52 week low"),
-				YearHigh = GetOverviewHighLow(section, "52 week high"),
+				ReturnYTD = GetOverviewColumn(section, "YTD return").Parse(),
+				AverageReturnFiveYear = GetOverviewColumn(section, "5 yr avg return").Parse(),
+				TotalNetAssets = GetOverviewColumn(section, "Total net assets").Parse(),
+				Price = GetOverviewPrice(section).Parse(),
+				YearLow = GetOverviewHighLow(section, "52 week low").Parse(),
+				YearHigh = GetOverviewHighLow(section, "52 week high").Parse(),
 			};
 		}
 
@@ -62,12 +62,12 @@ namespace MarketWatch.Web
 
 			return new Expenses
 			{
-				FrontLoad = GetBlockSectionColumn(section, "Front load"),
-				DeferredLoad = GetBlockSectionColumn(section, "Deferred load"),
-				MaxRedemptionFee = GetBlockSectionColumn(section, "Max. redemption fee"),
-				TotalExpenseRatio = GetBlockSectionColumn(section, "Total expense ratio"),
-				TwelveB1 = GetBlockSectionColumn(section, "12 b-1"),
-				Turnover = GetBlockSectionColumn(section, "Turnover"),
+				FrontLoad = GetBlockSectionColumn(section, "Front load").Parse(),
+				DeferredLoad = GetBlockSectionColumn(section, "Deferred load").Parse(),
+				MaxRedemptionFee = GetBlockSectionColumn(section, "Max. redemption fee").Parse(),
+				TotalExpenseRatio = GetBlockSectionColumn(section, "Total expense ratio").Parse(),
+				TwelveB1 = GetBlockSectionColumn(section, "12 b-1").Parse(),
+				Turnover = GetBlockSectionColumn(section, "Turnover").Parse(),
 			};
 		}
 
@@ -79,10 +79,10 @@ namespace MarketWatch.Web
 
 			return new Distributions
 			{
-				IncomeDividend = GetBlockSectionColumn(section, "Income dividend"),
+				IncomeDividend = GetBlockSectionColumn(section, "Income dividend").Parse(),
 				DividendFrequency = GetBlockSectionColumn(section, "Dividend freq."),
-				CapitalGain2015 = GetBlockSectionColumn(section, "Capital gain (2015)"),
-				CapitalGainYTD = GetBlockSectionColumn(section, "Capital gain (YTD)"),
+				CapitalGain2015 = GetBlockSectionColumn(section, "Capital gain (2015)").Parse(),
+				CapitalGainYTD = GetBlockSectionColumn(section, "Capital gain (YTD)").Parse(),
 			};
 		}
 
@@ -94,10 +94,10 @@ namespace MarketWatch.Web
 
 			return new Risk
 			{
-				Alpha = GetBlockSectionColumn(section, "Alpha"),
-				Beta = GetBlockSectionColumn(section, "Beta"),
-				StandardDeviation = GetBlockSectionColumn(section, "Standard deviation"),
-				RSquared = GetBlockSectionColumn(section, "R. squared"),
+				Alpha = GetBlockSectionColumn(section, "Alpha").Parse(),
+				Beta = GetBlockSectionColumn(section, "Beta").Parse(),
+				StandardDeviation = GetBlockSectionColumn(section, "Standard deviation").Parse(),
+				RSquared = GetBlockSectionColumn(section, "R. squared").Parse(),
 			};
 		}
 
@@ -108,11 +108,11 @@ namespace MarketWatch.Web
 
 			return new LipperLeader
 			{
-				TotalReturn = GetLipperLeaderValue(section, "Total Return"),
-				ConsistentReturn = GetLipperLeaderValue(section, "Consistent Return"),
-				Preservation = GetLipperLeaderValue(section, "Preservation"),
-				TaxEfficiency = GetLipperLeaderValue(section, "Tax Efficiency"),
-				Expense = GetLipperLeaderValue(section, "Expense"),
+				TotalReturn = GetLipperLeaderValue(section, "Total Return").Parse(),
+				ConsistentReturn = GetLipperLeaderValue(section, "Consistent Return").Parse(),
+				Preservation = GetLipperLeaderValue(section, "Preservation").Parse(),
+				TaxEfficiency = GetLipperLeaderValue(section, "Tax Efficiency").Parse(),
+				Expense = GetLipperLeaderValue(section, "Expense").Parse(),
 			};
 		}
 
@@ -121,17 +121,17 @@ namespace MarketWatch.Web
 			if (section == null)
 				return new Performance();
 
-			var strings = GetPerformanceStrings(section, name);
-			if (strings?.Length != 5)
+			var values = GetPerformanceValues(section, name);
+			if (values?.Length != 5)
 				return new Performance();
 
 			return new Performance
 			{
-				YearToDate = strings[0],
-				OneYear = strings[1],
-				ThreeYear = strings[2],
-				FiveYear = strings[3],
-				TenYear = strings[4],
+				YearToDate = values[0],
+				OneYear = values[1],
+				ThreeYear = values[2],
+				FiveYear = values[3],
+				TenYear = values[4],
 			};
 		}
 
@@ -140,17 +140,17 @@ namespace MarketWatch.Web
 			if (section == null)
 				return new PerformanceRank();
 
-			var strings = GetPerformanceStrings(section, name);
-			if (strings?.Length != 5)
+			var values = GetPerformanceValues(section, name);
+			if (values?.Length != 5)
 				return new PerformanceRank();
 
 			return new PerformanceRank
 			{
-				YearToDate = strings[0],
-				OneYear = strings[1],
-				ThreeYear = strings[2],
-				FiveYear = strings[3],
-				TenYear = strings[4],
+				YearToDate = values[0],
+				OneYear = values[1],
+				ThreeYear = values[2],
+				FiveYear = values[3],
+				TenYear = values[4],
 			};
 		}
 
@@ -300,7 +300,7 @@ namespace MarketWatch.Web
 			return null;
 		}
 
-		private static string[] GetPerformanceStrings(XmlElement section, string column)
+		private static double?[] GetPerformanceValues(XmlElement section, string column)
 		{
 			XmlElement table = section.SelectSingleNode("//tbody") as XmlElement;
 			if (table?.ChildNodes?.Count != 6)
@@ -338,11 +338,11 @@ namespace MarketWatch.Web
 
 			return new[]
 			{
-				ytd.ChildNodes[index].InnerText.Trim(),
-				oneYr.ChildNodes[index].InnerText.Trim(),
-				threeYr.ChildNodes[index].InnerText.Trim(),
-				fiveYr.ChildNodes[index].InnerText.Trim(),
-				tenYr.ChildNodes[index].InnerText.Trim(),
+				ytd.ChildNodes[index].InnerText.Trim().Parse(),
+				oneYr.ChildNodes[index].InnerText.Trim().Parse(),
+				threeYr.ChildNodes[index].InnerText.Trim().Parse(),
+				fiveYr.ChildNodes[index].InnerText.Trim().Parse(),
+				tenYr.ChildNodes[index].InnerText.Trim().Parse(),
 			};
 		}
 
