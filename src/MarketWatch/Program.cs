@@ -11,36 +11,36 @@ using System.Threading;
 
 namespace MarketWatch
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var elasticsearchUri = new Uri(ConfigurationManager.AppSettings["ElasticsearchUri"]);
-            var elasticsearchUsername = ConfigurationManager.AppSettings["ElasticsearchUsername"];
-            var elasticsearchPassword = ConfigurationManager.AppSettings["ElasticsearchPassword"];
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			var elasticsearchUri = new Uri(ConfigurationManager.AppSettings["ElasticsearchUri"]);
+			var elasticsearchUsername = ConfigurationManager.AppSettings["ElasticsearchUsername"];
+			var elasticsearchPassword = ConfigurationManager.AppSettings["ElasticsearchPassword"];
 
-            var options = new ElasticsearchSinkOptions(elasticsearchUri)
-            {
-                ModifyConnectionSettings = c => c.BasicAuthentication(elasticsearchUsername, elasticsearchPassword),
-            };
+			var options = new ElasticsearchSinkOptions(elasticsearchUri)
+			{
+				ModifyConnectionSettings = c => c.BasicAuthentication(elasticsearchUsername, elasticsearchPassword),
+			};
 
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .WriteTo.Elasticsearch(options)
-                .CreateLogger();
+			Log.Logger = new LoggerConfiguration()
+				.WriteTo.Console()
+				.WriteTo.Elasticsearch(options)
+				.CreateLogger();
 
-            // Download mutual fund information.
-            DownloadAsync().GetAwaiter().GetResult();
+			// Download mutual fund information.
+			DownloadAsync().GetAwaiter().GetResult();
 
-            Console.WriteLine("Press enter to exit ...");
-            Console.ReadLine();
-        }
+			Console.WriteLine("Press enter to exit ...");
+			Console.ReadLine();
+		}
 
-        private static async Task DownloadAsync()
-        {
-            var watch = new MarketWatchScraper();
-            var funds = (await watch.GetMutualFundsAsync(CancellationToken.None)).ToList();
-            Console.WriteLine(funds.Count);
-        }
-    }
+		private static async Task DownloadAsync()
+		{
+			var watch = new MarketWatchScraper();
+			var funds = (await watch.GetMutualFundsAsync()).ToList();
+			Console.WriteLine(funds.Count);
+		}
+	}
 }
