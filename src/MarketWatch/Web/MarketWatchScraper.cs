@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -46,7 +47,6 @@ namespace MarketWatch.Web
 					var fund = await GetMutualFundAsync(client, row);
 					if (fund != null)
 					{
-						Console.WriteLine($"Read mutual fund '{fund.Symbol}': {fund.Overview.ReturnYTD} YTD");
 						funds.Add(fund);
 					}
 				}
@@ -135,6 +135,73 @@ namespace MarketWatch.Web
 			var startIndex = m.Index;
 			int endIndex = contents.IndexOf(end, startIndex) + end.Length + 1;
 			return contents.Substring(startIndex, endIndex - startIndex);
+		}
+
+		private static void LogMutualFund(MutualFund fund)
+		{
+			Log.Information("Mutual fund. {Symbol} {Name} {ReturnYTD}",
+				fund.Symbol,
+				fund.Name,
+
+				fund.Overview.ReturnYTD,
+				fund.Overview.AverageReturnFiveYear,
+				fund.Overview.TotalNetAssets,
+				fund.Overview.Price,
+				fund.Overview.YearLow,
+				fund.Overview.YearHigh,
+
+				fund.Expenses.FrontLoad,
+				fund.Expenses.DeferredLoad,
+				fund.Expenses.MaxRedemptionFee,
+				fund.Expenses.TotalExpenseRatio,
+				fund.Expenses.TwelveB1,
+				fund.Expenses.Turnover,
+
+				fund.Distributions.IncomeDividend,
+				fund.Distributions.DividendFrequency,
+				fund.Distributions.CapitalGain2015,
+				fund.Distributions.CapitalGainYTD,
+
+				fund.Risk.Alpha,
+				fund.Risk.Beta,
+				fund.Risk.StandardDeviation,
+				fund.Risk.RSquared,
+
+				fund.LipperLeader.TotalReturn,
+				fund.LipperLeader.ConsistentReturn,
+				fund.LipperLeader.Preservation,
+				fund.LipperLeader.TaxEfficiency,
+				fund.LipperLeader.Expense,
+
+				fund.FundPerformance.YearToDate,
+				fund.FundPerformance.OneYear,
+				fund.FundPerformance.ThreeYear,
+				fund.FundPerformance.FiveYear,
+				fund.FundPerformance.TenYear,
+
+				fund.CategoryPerformance.YearToDate,
+				fund.CategoryPerformance.OneYear,
+				fund.CategoryPerformance.ThreeYear,
+				fund.CategoryPerformance.FiveYear,
+				fund.CategoryPerformance.TenYear,
+
+				fund.IndexPerformance.YearToDate,
+				fund.IndexPerformance.OneYear,
+				fund.IndexPerformance.ThreeYear,
+				fund.IndexPerformance.FiveYear,
+				fund.IndexPerformance.TenYear,
+
+				fund.PercentRankInCategory.YearToDate,
+				fund.PercentRankInCategory.OneYear,
+				fund.PercentRankInCategory.ThreeYear,
+				fund.PercentRankInCategory.FiveYear,
+				fund.PercentRankInCategory.TenYear,
+
+				fund.QuintileRank.YearToDate,
+				fund.QuintileRank.OneYear,
+				fund.QuintileRank.ThreeYear,
+				fund.QuintileRank.FiveYear,
+				fund.QuintileRank.TenYear);
 		}
 	}
 }

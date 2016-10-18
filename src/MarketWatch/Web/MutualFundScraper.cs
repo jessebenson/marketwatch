@@ -80,7 +80,7 @@ namespace MarketWatch.Web
 			return new Distributions
 			{
 				IncomeDividend = GetBlockSectionColumn(section, "Income dividend"),
-				DividentFrequency = GetBlockSectionColumn(section, "Dividend freq."),
+				DividendFrequency = GetBlockSectionColumn(section, "Dividend freq."),
 				CapitalGain2015 = GetBlockSectionColumn(section, "Capital gain (2015)"),
 				CapitalGainYTD = GetBlockSectionColumn(section, "Capital gain (YTD)"),
 			};
